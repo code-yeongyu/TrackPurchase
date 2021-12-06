@@ -29,7 +29,10 @@ class NaverPaymentHistoryService {
     await this.page.waitForSelector("#query");
   }
 
-  async gotoPaymentHistoryPage() {}
+  async gotoPaymentHistoryPage() {
+    await this.page.goto(this.HISTORY_URL);
+    await this.page.waitForSelector("div[class^='paymentHistory_section__']");
+  }
 
   async getPaymentHistory() {}
 }
