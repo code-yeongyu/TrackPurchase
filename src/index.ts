@@ -19,7 +19,15 @@ class NaverPaymentHistoryService {
     await this.page.goto(this.LOGIN_URL);
   }
 
-  async login() {}
+  async login() {
+    await this.page.waitForSelector("#id");
+    await this.page.focus("#id");
+    await this.page.keyboard.type(this.id, { delay: 250 });
+    await this.page.focus("#pw");
+    await this.page.keyboard.type(this.password, { delay: 250 });
+    await this.page.keyboard.press("Enter");
+    await this.page.waitForSelector("#query");
+  }
 
   async gotoPaymentHistoryPage() {}
 
