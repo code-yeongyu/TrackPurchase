@@ -15,7 +15,9 @@ class NaverPaymentHistoryService {
     this.password = password;
   }
 
-  async gotoLoginPage() {}
+  async gotoLoginPage() {
+    await this.page.goto(this.LOGIN_URL);
+  }
 
   async login() {}
 
