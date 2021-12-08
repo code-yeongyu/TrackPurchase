@@ -159,9 +159,7 @@ class NaverPaymentHistoryService {
   await naverPaymentHistoryService.gotoLoginPage();
   await naverPaymentHistoryService.login();
   await naverPaymentHistoryService.gotoPaymentHistoryPage();
-  await naverPaymentHistoryService.loadPaymentHistory();
-
-  const history = naverPaymentHistoryService.history;
-
-  console.log(history);
+  await naverPaymentHistoryService.loadFullPaymentHistory();
+  await naverPaymentHistoryService.parsePaymentHistory();
+  console.log(naverPaymentHistoryService.history);
 })();
