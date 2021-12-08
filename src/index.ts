@@ -65,6 +65,7 @@ class NaverPaymentHistoryService {
     };
 
     if (!(thumbnailUrl && title && priceString && statusString)) {
+      console.error("parsePaymentElement: invalid element");
       return;
     }
 
