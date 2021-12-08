@@ -147,7 +147,7 @@ class NaverPaymentHistoryService {
     args: ["--start-maximized"],
   });
   const page = await browser.newPage();
-  await page.setViewport({ height: 1920, width: 1080 });
+  await page.setViewport({ height: 800, width: 1200 });
   await page.setUserAgent(MOBILE_UA);
 
   const naverPaymentHistoryService = new NaverPaymentHistoryService(
