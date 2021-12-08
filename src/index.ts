@@ -11,6 +11,7 @@ class NaverPaymentHistoryService {
   private password: string;
   private page: puppeteer.Page;
   private _history: Payment[] = [];
+  private _fullyLoaded = false;
 
   constructor(page: puppeteer.Page, id: string, password: string) {
     this.page = page;
@@ -92,6 +93,37 @@ class NaverPaymentHistoryService {
     this._history = history;
   }
 
+  async loadMorePaymentHistory() {
+    if (this._fullyLoaded) {
+      return;
+    }
+
+    const buttonSelector = "div[class^='ButtonPrevList_article__'] > button";
+    const currentScrollHeight: number = await this.page.evaluate(() => {
+      return document.body.scrollHeight;
+    });
+    const loadMoreButton = await this.page.$(buttonSelector);
+
+    await loadMoreButton?.click();
+    try {
+      await this.page.waitForFunction(
+        (currentScrollHeight: number) => {
+          return document.body.scrollHeight > currentScrollHeight;
+        },
+        { timeout: 1000 },
+        currentScrollHeight
+      );
+    } catch (e) {
+      if (e instanceof puppeteer.errors.TimeoutError) {
+        const newLoadMoreButton = await this.page.$(buttonSelector);
+        if (newLoadMoreButton === null) {
+          this._fullyLoaded = true;
+        }
+        return;
+      }
+      console.error(e);
+    }
+  }
   public get history() {
     return this._history;
   }
