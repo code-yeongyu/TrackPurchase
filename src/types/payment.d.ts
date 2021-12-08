@@ -5,4 +5,5 @@ export default interface Payment {
   title: string;
   price: number;
   status: PAYMENT_HISTORY_STATUS;
+  purchasedAtTimestamp?: number;
 }
