@@ -26,9 +26,9 @@ class NaverPaymentHistoryService {
   async login() {
     await this.page.waitForSelector("#id");
     await this.page.focus("#id");
-    await this.page.keyboard.type(this.id, { delay: 250 });
+    await this.page.keyboard.type(this.id, { delay: 150 });
     await this.page.focus("#pw");
-    await this.page.keyboard.type(this.password, { delay: 250 });
+    await this.page.keyboard.type(this.password, { delay: 150 });
     await this.page.keyboard.press("Enter");
     await this.page.waitForSelector("#query");
   }
@@ -45,35 +45,75 @@ class NaverPaymentHistoryService {
     return elements;
   }
 
-  private async parsePaymentElement(element: puppeteer.ElementHandle) {
-    const { thumbnailUrl, title, priceString, statusString } = {
-      thumbnailUrl: await element.$eval(
-        'div[class^="PaymentList_thumb__"] > img',
-        (el) => el.getAttribute("src")
-      ),
-      statusString: await element.$eval(
-        'div[class^="PaymentList_status__"]',
-        (el) => el.textContent
-      ),
-      priceString: await element.$eval(
-        'div[class^="PaymentList_sum__"]',
-        (el) => el.textContent
-      ),
-      title: await element.$eval(
-        'strong[class^="PaymentList_name__"]',
-        (el) => el.textContent
-      ),
-    };
+  private parseTimestampFromString(date: string) {
+    let splittedByDot = date.split(".");
+    if (splittedByDot.length === 1) {
+      return;
+    }
+    splittedByDot = splittedByDot.slice(0, splittedByDot.length - 1);
 
-    if (!(thumbnailUrl && title && priceString && statusString)) {
+    const isThisYear = splittedByDot.length == 2;
+
+    if (isThisYear) {
+      const year = 2021;
+      const month = +splittedByDot[0].trim();
+      const day = +splittedByDot[1].trim();
+      return new Date(year, month - 1, day).getTime();
+    }
+
+    const year = +splittedByDot[0].trim();
+    const month = +splittedByDot[1].trim();
+    const day = +splittedByDot[2].trim();
+    return new Date(year, month - 1, day).getTime();
+  }
+
+  private async parsePaymentElement(element: puppeteer.ElementHandle) {
+    const thumbnailUrl = await element.$eval(
+      'div[class^="PaymentList_thumb__"] > img',
+      (el) => el.getAttribute("src")
+    );
+    const title = await element.$eval(
+      'strong[class^="PaymentList_name__"]',
+      (el) => el.textContent
+    );
+    const statusString = await element.$eval(
+      'div[class^="PaymentList_status__"]',
+      (el) => el.textContent
+    );
+    const priceString = await element.$eval(
+      'div[class^="PaymentList_sum__"]',
+      (el) => el.textContent
+    );
+    const purchasedAtString = await element.$eval(
+      "div[class^='PaymentList_date__']",
+      (el) => el.textContent
+    );
+
+    const isRequiredFieldExists = !(
+      thumbnailUrl &&
+      title &&
+      priceString &&
+      statusString &&
+      purchasedAtString
+    );
+
+    if (isRequiredFieldExists) {
       console.error("parsePaymentElement: invalid element");
       return;
     }
 
     const price = +priceString.replace(/[^0-9]/g, "");
     const status: PAYMENT_HISTORY_STATUS = <PAYMENT_HISTORY_STATUS>statusString;
+    const purchasedAtTimestamp: number | undefined =
+      this.parseTimestampFromString(purchasedAtString);
 
-    const payment: Payment = { thumbnailUrl, title, price, status };
+    const payment: Payment = {
+      thumbnailUrl,
+      title,
+      price,
+      status,
+      purchasedAtTimestamp,
+    };
 
     return payment;
   }
