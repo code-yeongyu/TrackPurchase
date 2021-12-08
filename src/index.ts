@@ -124,6 +124,13 @@ class NaverPaymentHistoryService {
       console.error(e);
     }
   }
+
+  async loadFullPaymentHistory() {
+    while (!this._fullyLoaded) {
+      await this.loadMorePaymentHistory();
+    }
+  }
+
   public get history() {
     return this._history;
   }
