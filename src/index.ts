@@ -77,7 +77,7 @@ class NaverPaymentHistoryService {
     return payment;
   }
 
-  async loadPaymentHistory() {
+  async parsePaymentHistory() {
     const elements = await this.getPaymentElements();
     let history: Payment[] = [];
 
