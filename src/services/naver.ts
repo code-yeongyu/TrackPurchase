@@ -7,9 +7,9 @@ export default class NaverPaymentHistoryService {
   private readonly HISTORY_URL =
     "https://new-m.pay.naver.com/historybenefit/paymenthistory";
 
-  private id: string;
-  private password: string;
-  private page: puppeteer.Page;
+  private readonly id: string;
+  private readonly password: string;
+  private readonly page: puppeteer.Page;
   private _history: Payment[] = [];
   private _fullyLoaded = false;
 
@@ -17,32 +17,6 @@ export default class NaverPaymentHistoryService {
     this.page = page;
     this.id = id;
     this.password = password;
-  }
-
-  async gotoLoginPage() {
-    await this.page.goto(this.LOGIN_URL);
-  }
-
-  async login() {
-    await this.page.waitForSelector("#id");
-    await this.page.focus("#id");
-    await this.page.keyboard.type(this.id, { delay: 150 });
-    await this.page.focus("#pw");
-    await this.page.keyboard.type(this.password, { delay: 150 });
-    await this.page.keyboard.press("Enter");
-    await this.page.waitForSelector("#query");
-  }
-
-  async gotoPaymentHistoryPage() {
-    await this.page.goto(this.HISTORY_URL);
-    await this.page.waitForSelector("div[class^='paymentHistory_section__']");
-  }
-
-  private async getPaymentElements() {
-    const elements = await this.page.$$(
-      "div[class^='PaymentList_article__'] > ul > li"
-    );
-    return elements;
   }
 
   private parseTimestampFromString(date: string) {
@@ -65,6 +39,13 @@ export default class NaverPaymentHistoryService {
     const month = +splittedByDot[1].trim();
     const day = +splittedByDot[2].trim();
     return new Date(year, month - 1, day).getTime();
+  }
+
+  private async getPaymentElements() {
+    const elements = await this.page.$$(
+      "div[class^='PaymentList_article__'] > ul > li"
+    );
+    return elements;
   }
 
   private async parsePaymentElement(element: puppeteer.ElementHandle) {
@@ -116,6 +97,25 @@ export default class NaverPaymentHistoryService {
     };
 
     return payment;
+  }
+
+  async gotoLoginPage() {
+    await this.page.goto(this.LOGIN_URL);
+  }
+
+  async login() {
+    await this.page.waitForSelector("#id");
+    await this.page.focus("#id");
+    await this.page.keyboard.type(this.id, { delay: 150 });
+    await this.page.focus("#pw");
+    await this.page.keyboard.type(this.password, { delay: 150 });
+    await this.page.keyboard.press("Enter");
+    await this.page.waitForSelector("#query");
+  }
+
+  async gotoPaymentHistoryPage() {
+    await this.page.goto(this.HISTORY_URL);
+    await this.page.waitForSelector("div[class^='paymentHistory_section__']");
   }
 
   async parsePaymentHistory() {
