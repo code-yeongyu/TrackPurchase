@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
+    "test": "jest .",
     "build": "tsc -p .",
     "start": "ts-node .",
     "start:watch": "nodemon src/index.ts"
