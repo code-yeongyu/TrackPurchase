@@ -1,4 +1,4 @@
-import PaymentElementParser from "./paymentElementParser";
+import PaymentElementParser from "./elementParser";
 
 function getWrappedHtml(htmlString: string) {
   return `<div>${htmlString}</div>`;
@@ -7,7 +7,7 @@ function getWrappedHtml(htmlString: string) {
 describe("Parse payment history", () => {
   let paymentElementParser: PaymentElementParser;
   beforeEach(() => {
-    paymentElementParser = new PaymentElementParser();
+    paymentElementParser = new PaymentElementParser(page);
   });
   it("Should not return 'purchasedAt' but with 'isAdditional' to be truthy if the product is '추가상품' ", async () => {
     // given
@@ -39,13 +39,15 @@ describe("Parse payment history", () => {
 
     const wrappedHTML = getWrappedHtml(HTML);
     await page.setContent(wrappedHTML);
+
     const element = await page.$("div");
+
     if (element === null) {
       throw new Error("element is null");
     }
 
     // when
-    const paymentHistory = await paymentElementParser.parse(element);
+    const paymentHistory = await paymentElementParser.parseElement(element);
 
     // then
     expect(paymentHistory.name).toEqual(productName);
@@ -89,7 +91,7 @@ describe("Parse payment history", () => {
       }
 
       // when
-      const paymentHistory = await paymentElementParser.parse(element);
+      const paymentHistory = await paymentElementParser.parseElement(element);
 
       // then
       expect(paymentHistory.name).toEqual(productName);
@@ -136,7 +138,7 @@ describe("Parse payment history", () => {
       }
 
       // when
-      const paymentHistory = await paymentElementParser.parse(element);
+      const paymentHistory = await paymentElementParser.parseElement(element);
 
       // then
       expect(paymentHistory.name).toEqual(productName);

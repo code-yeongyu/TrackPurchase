@@ -1,7 +1,8 @@
 import puppeteer from "puppeteer";
 import PaymentHistory from "../common/paymentHistory";
 
-export default class PaymentElementParser {
+export default class ElementParser {
+  private readonly page: puppeteer.Page;
   private static async parseName(element: puppeteer.ElementHandle) {
     const name =
       (await element.$eval(
@@ -11,11 +12,16 @@ export default class PaymentElementParser {
     return name;
   }
 
+  constructor(page: puppeteer.Page) {
+    this.page = page;
+  }
+
   private static async parsePrice(element: puppeteer.ElementHandle) {
-    const priceString = await element.$eval(
-      'div[class^="PaymentList_sum__"]',
-      (el) => el.textContent
-    );
+    const priceString =
+      (await element.$eval(
+        'div[class^="PaymentList_sum__"]',
+        (el) => el.textContent
+      )) || "0";
 
     const price = +priceString.replace(/[^0-9]/g, "");
 
@@ -62,7 +68,7 @@ export default class PaymentElementParser {
     const isThisYear = splittedByDot.length == 2;
 
     if (isThisYear) {
-      const year = 2021;
+      const year = new Date().getFullYear();
       const month = +splittedByDot[0].trim();
       const day = +splittedByDot[1].trim();
       return new Date(year, month - 1, day);
@@ -78,22 +84,24 @@ export default class PaymentElementParser {
     return purchasedAtDateString.trim() === "추가상품";
   }
 
-  async parse(element: puppeteer.ElementHandle) {
-    const name = await PaymentElementParser.parseName(element);
-    const price = await PaymentElementParser.parsePrice(element);
-    const thumbnailURL = await PaymentElementParser.parseThumbnailUrl(element);
-    const paymentStatus = await PaymentElementParser.parsePaymentStatus(
+  async parsePaymentElements() {
+    const elements = await this.page.$$(
+      "div[class^='PaymentList_article__'] > ul > li"
+    );
+    return elements;
+  }
+
+  async parseElement(element: puppeteer.ElementHandle) {
+    const name = await ElementParser.parseName(element);
+    const price = await ElementParser.parsePrice(element);
+    const thumbnailURL = await ElementParser.parseThumbnailUrl(element);
+    const paymentStatus = await ElementParser.parsePaymentStatus(element);
+    const purchasedAtDateString = await ElementParser.parsePurchasedAtString(
       element
     );
-    const purchasedAtDateString =
-      await PaymentElementParser.parsePurchasedAtString(element);
 
-    const purchasedAt = PaymentElementParser.parsePurchasedAt(
-      purchasedAtDateString
-    );
-    const isAdditional = PaymentElementParser.parseIsAdditional(
-      purchasedAtDateString
-    );
+    const purchasedAt = ElementParser.parsePurchasedAt(purchasedAtDateString);
+    const isAdditional = ElementParser.parseIsAdditional(purchasedAtDateString);
 
     const paymentHistory: PaymentHistory = {
       name,
