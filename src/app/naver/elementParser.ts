@@ -92,13 +92,14 @@ export default class ElementParser {
   }
 
   async parseElement(element: puppeteer.ElementHandle) {
-    const name = await ElementParser.parseName(element);
-    const price = await ElementParser.parsePrice(element);
-    const thumbnailURL = await ElementParser.parseThumbnailUrl(element);
-    const paymentStatus = await ElementParser.parsePaymentStatus(element);
-    const purchasedAtDateString = await ElementParser.parsePurchasedAtString(
-      element
-    );
+    const [name, price, thumbnailURL, paymentStatus, purchasedAtDateString] =
+      await Promise.all([
+        ElementParser.parseName(element),
+        ElementParser.parsePrice(element),
+        ElementParser.parseThumbnailUrl(element),
+        ElementParser.parsePaymentStatus(element),
+        ElementParser.parsePurchasedAtString(element),
+      ]);
 
     const purchasedAt = ElementParser.parsePurchasedAt(purchasedAtDateString);
     const isAdditional = ElementParser.parseIsAdditional(purchasedAtDateString);
