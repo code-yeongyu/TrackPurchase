@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest .",
+    "test:cov": "jest . --coverage",
     "build": "tsc -p .",
     "start": "ts-node .",
     "start:watch": "nodemon src/index.ts"
@@ -27,6 +28,7 @@
     "@types/jest-environment-puppeteer": "^4.4.1",
     "babel-jest": "^27.4.5",
     "jest": "^27.4.5",
-    "jest-puppeteer": "^6.0.3"
+    "jest-puppeteer": "^6.0.3",
+    "puppeteer-to-istanbul": "^1.4.0"
   }
 }
