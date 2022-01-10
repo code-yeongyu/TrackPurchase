@@ -11,11 +11,7 @@
     "start:watch": "nodemon src/index.ts"
   },
   "dependencies": {
-    "nodemon": "^2.0.15",
-    "puppeteer": "^12.0.1",
-    "ts-node": "^10.4.0",
-    "tsc": "^2.0.3",
-    "typescript": "^4.5.2"
+    "puppeteer": "^12.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -29,6 +25,10 @@
     "babel-jest": "^27.4.5",
     "jest": "^27.4.5",
     "jest-puppeteer": "^6.0.3",
-    "puppeteer-to-istanbul": "^1.4.0"
+    "nodemon": "^2.0.15",
+    "puppeteer-to-istanbul": "^1.4.0",
+    "ts-node": "^10.4.0",
+    "tsc": "^2.0.3",
+    "typescript": "^4.5.4"
   }
 }
