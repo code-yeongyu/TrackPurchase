@@ -1,8 +1,8 @@
 import puppeteer from "puppeteer";
-import { NaverModule, URLChanger, ElementParser, PageInteractor } from ".";
+import { Module, URLChanger, ElementParser, PageInteractor } from ".";
 
-export default class NaverModuleFactory {
-  static create(page: puppeteer.Page): NaverModule {
+export default class ModuleFactory {
+  static create(page: puppeteer.Page): Module {
     const pageInteractor = new PageInteractor(page);
     const urlChanger = new URLChanger(page);
     const elementParser = new ElementParser(page);
