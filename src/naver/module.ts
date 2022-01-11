@@ -1,5 +1,5 @@
-import { URLChanger, PageInteractor, ElementParser } from ".";
-import { Module } from "../common/";
+import { URLChanger, PageInteractor, ElementParser } from "./";
+import { Module } from "../common";
 
 export default interface NaverModule extends Module {
   readonly urlChanger: URLChanger;

@@ -1,9 +1,9 @@
-import { NaverModule as Module } from "./";
+import { NaverModule } from ".";
 
-export default class NaverService {
-  private readonly module: Module;
+export default class Service {
+  private readonly module: NaverModule;
 
-  constructor(module: Module) {
+  constructor(module: NaverModule) {
     this.module = module;
   }
 

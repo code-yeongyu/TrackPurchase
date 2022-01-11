@@ -1,6 +1,6 @@
 {
-  "name": "track-purchase",
-  "version": "1.0.0",
+  "name": "trackpurchase",
+  "version": "0.0.1",
   "main": "src/index.ts",
   "license": "MIT",
   "repository": {

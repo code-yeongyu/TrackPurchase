@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { NaverModule, URLChanger, ElementParser, PageInteractor } from "./";
+import { NaverModule, URLChanger, ElementParser, PageInteractor } from ".";
 
 export default class NaverModuleFactory {
   static create(page: puppeteer.Page): NaverModule {
