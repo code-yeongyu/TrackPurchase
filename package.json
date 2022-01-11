@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code-yeongyu/TrackPurchase.git"
+  },
+  "keywords": [
+    "crawler"
+  ],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "jest .",
     "test:cov": "jest . --coverage",
