@@ -14,6 +14,10 @@
   "files": [
     "src"
   ],
+  "jest": {
+    "preset": "jest-puppeteer",
+    "coveragePathIgnorePatterns": ["elementParser.ts"]
+  },
   "scripts": {
     "test": "jest .",
     "test:cov": "jest . --coverage",
