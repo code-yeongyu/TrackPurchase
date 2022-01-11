@@ -1,4 +1,4 @@
-import Module from "./module";
+import { NaverModule as Module } from "./";
 
 export default class NaverService {
   private readonly module: Module;

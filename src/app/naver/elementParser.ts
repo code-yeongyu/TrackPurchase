@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import PaymentHistory from "../common/paymentHistory";
+import { PaymentHistory } from "../common";
 
 export default class ElementParser {
   private readonly page: puppeteer.Page;
