@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { NaverService, ModuleFactory } from "trackpurchase/naver";
+import { NaverApp } from "trackpurchase";
 
 import readline from "readline";
 
@@ -15,8 +15,8 @@ const printNaverPayHistory = async (id: string, password: string) => {
   await page.setViewport({ height: 800, width: 1200 });
   await page.setUserAgent(MOBILE_UA);
 
-  const module = ModuleFactory.create(page);
-  const crawlService = new NaverService(module);
+  const module = NaverApp.ModuleFactory.create(page);
+  const crawlService = new NaverApp.Service(module);
 
   await crawlService.login(id, password);
 
