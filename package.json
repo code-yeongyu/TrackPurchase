@@ -1,6 +1,6 @@
 {
   "name": "trackpurchase",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "main": "src/index.ts",
   "license": "MIT",
   "repository": {
@@ -11,6 +11,7 @@
   "keywords": [
     "crawler"
   ],
+  "description": "단 몇줄만의 코드로 다양한 쇼핑 플랫폼에서 결제 내역을 긁어오자!",
   "files": [
     "src"
   ],
