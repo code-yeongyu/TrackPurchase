@@ -1,1 +1,1 @@
-export * as naver from "./app/naver";
+export * as NaverApp from "./app/naver";
