@@ -3,7 +3,7 @@
   <h1 align="center">TrackPurchase</h1>
 </p>
 
-[![NPM version](https://badgen.net/npm/v/trackpurchase)](https://www.npmjs.com/package/trackpurchase)
+[![NPM version](https://badgen.net/npm/v/trackpurchase)](https://www.npmjs.com/package/trackpurchase) [![codecov](https://codecov.io/gh/code-yeongyu/TrackPurchase/branch/master/graph/badge.svg?token=UCZC198HMK)](https://codecov.io/gh/code-yeongyu/TrackPurchase)
 
 > 단 몇줄만의 코드로 다양한 쇼핑 플랫폼에서 결제 내역을 긁어오자!
 
@@ -24,14 +24,14 @@ yarn add trackpurchase
 ### 네이버 페이
 
 ```typescript
-import { NaverApp } from "trackpurchase"
-const browser = await puppeteer.launch()
-const page = await browser.newPage()
+import { NaverApp } from "trackpurchase";
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
 
-const module = NaverApp.ModuleFactory.create(page)
-const crawlService = new NaverApp.Service(module)
+const module = NaverApp.ModuleFactory.create(page);
+const crawlService = new NaverApp.Service(module);
 
-await crawlService.login(id, password)
-const history = await crawlService.getHistory()
-console.log(history)
+await crawlService.login(id, password);
+const history = await crawlService.getHistory();
+console.log(history);
 ```
