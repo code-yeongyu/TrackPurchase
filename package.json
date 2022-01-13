@@ -1,6 +1,6 @@
 {
   "name": "trackpurchase",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "src/index.ts",
   "license": "MIT",
   "repository": {
@@ -20,7 +20,10 @@
   ],
   "jest": {
     "preset": "jest-puppeteer",
-    "coveragePathIgnorePatterns": ["dist/", "elementParser.ts"]
+    "coveragePathIgnorePatterns": [
+      "dist/",
+      "elementParser.ts"
+    ]
   },
   "scripts": {
     "test": "jest .",
