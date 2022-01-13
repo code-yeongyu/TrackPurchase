@@ -10,9 +10,7 @@ describe("Login", () => {
     await urlChanger.moveToLoginURL();
 
     // then
-    expect(pageSpy).toHaveBeenCalledWith(
-      "https://nid.naver.com/nidlogin.login"
-    );
+    expect(pageSpy).toHaveBeenCalledWith(urlChanger.loginURL);
   });
 });
 
@@ -28,8 +26,6 @@ describe("PaymentHistory", () => {
     await urlChanger.moveToPaymentHistoryURL();
 
     // then
-    expect(pageSpy).toHaveBeenCalledWith(
-      "https://new-m.pay.naver.com/historybenefit/paymenthistory"
-    );
+    expect(pageSpy).toHaveBeenCalledWith(urlChanger.paymentHistoryURL);
   });
 });
