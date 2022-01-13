@@ -20,9 +20,15 @@ jobs:
 
       - name: Install Dependencies
         run: yarn --immutable
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # because of .npmrc for supporting npm publish using github action
 
       - name: Test
         run: yarn test:cov
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # because of .npmrc for supporting npm publish using github action
 
       - name: Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash)
