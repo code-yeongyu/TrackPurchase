@@ -8,7 +8,7 @@ export default class PageInteractor {
     this.page = page;
   }
 
-  async login(id: string, password: string, delay?: number) {
+  async login(id: string, password: string, delay?: number, loginURL?: string) {
     await Promise.all([
       this.page.waitForSelector("#id"),
       this.page.waitForSelector("#pw"),
@@ -24,7 +24,11 @@ export default class PageInteractor {
       this.page.waitForNavigation({ waitUntil: "networkidle2" }),
     ]);
 
-    if (this.page.url().includes("https://nid.naver.com/nidlogin.login")) {
+    if (
+      this.page
+        .url()
+        .includes(loginURL || "https://nid.naver.com/nidlogin.login")
+    ) {
       throw new Error("Login failed");
     }
   }
