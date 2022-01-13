@@ -14,7 +14,7 @@
     "web automation",
     "puppeteer"
   ],
-  "description": "단 몇줄만의 코드로 다양한 쇼핑 플랫폼에서 결제 내역을 긁어오자!",
+  "description": "단 몇줄의 코드로 다양한 쇼핑 플랫폼에서 결제 내역을 긁어오자!",
   "files": [
     "src"
   ],
