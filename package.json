@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "jest .",
-    "test:cov": "jest . --coverage",
+    "test:cov": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx,ts}'",
     "build": "tsc -p ."
   },
   "dependencies": {
