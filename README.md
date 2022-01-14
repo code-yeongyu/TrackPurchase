@@ -3,7 +3,17 @@
   <h1 align="center">TrackPurchase</h1>
 </p>
 
-[![NPM version](https://badgen.net/npm/v/trackpurchase)](https://www.npmjs.com/package/trackpurchase) [![codecov](https://codecov.io/gh/code-yeongyu/TrackPurchase/branch/master/graph/badge.svg?token=UCZC198HMK)](https://codecov.io/gh/code-yeongyu/TrackPurchase) [![CI](https://github.com/code-yeongyu/TrackPurchase/actions/workflows/ci.yml/badge.svg)](https://github.com/code-yeongyu/TrackPurchase/actions/workflows/ci.yml)
+<p align="center">
+  <a href="https://www.npmjs.com/package/trackpurchase" target="_blank">
+    <img alt="NPM version" src="https://badgen.net/npm/v/trackpurchase">
+  </a>
+  <a href="https://codecov.io/gh/code-yeongyu/TrackPurchase" target="blank">
+    <img alt="codecov" src="https://codecov.io/gh/code-yeongyu/TrackPurchase/branch/master/graph/badge.svg?token=UCZC198HMK" >
+  </a>
+  <a href="https://github.com/code-yeongyu/TrackPurchase/actions/workflows/ci.yml" target="blank">
+    <img alt="codecov" src="https://github.com/code-yeongyu/TrackPurchase/actions/workflows/ci.yml/badge.svg" >
+  </a>
+</p>
 
 > 단 몇줄의 코드로 다양한 쇼핑 플랫폼에서 결제 내역을 긁어오자!
 
