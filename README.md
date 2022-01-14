@@ -11,7 +11,7 @@
 
 - 지원 플랫폼은 계속해서 추가될 예정입니다.
 
-![Naver Pay](https://developer.pay.naver.com/static/img/logo_black.png)
+[![Naver Pay](https://developer.pay.naver.com/static/img/logo_black.png)](https://pay.naver.com)
 
 ## 📦 설치
 
