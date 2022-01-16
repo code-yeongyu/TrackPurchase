@@ -114,4 +114,8 @@ export default class ElementParser {
     };
     return paymentHistory;
   }
+
+  async parseManualOTPInputElement() {
+    return await this.page.$("#otp");
+  }
 }
