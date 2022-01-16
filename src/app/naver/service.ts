@@ -13,20 +13,16 @@ export default class Service {
   }
 
   async getHistory() {
-    const history = [];
     await this.module.urlChanger.moveToPaymentHistoryURL();
     await this.module.pageInteractor.loadPaymentHistoryUntilPageEnds();
 
     const paymentElements =
       await this.module.elementParser.parsePaymentElements();
-    for (const element of paymentElements) {
-      const payment = await this.module.elementParser.parseElement(element);
-      if (!payment) {
-        continue;
-      }
-      history.push(payment);
-    }
 
-    return history;
+    return await Promise.all(
+      paymentElements.map((element) =>
+        this.module.elementParser.parseElement(element)
+      )
+    );
   }
 }
