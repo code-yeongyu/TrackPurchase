@@ -22,6 +22,9 @@
     "coveragePathIgnorePatterns": [
       "dist/",
       "elementParser.ts"
+    ],
+    "testPathIgnorePatterns" : [
+      "dist/"
     ]
   },
   "scripts": {
