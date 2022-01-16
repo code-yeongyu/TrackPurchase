@@ -8,29 +8,31 @@ export default class PageInteractor {
     this.page = page;
   }
 
-  async login(id: string, password: string, delay?: number, loginURL?: string) {
-    await Promise.all([
-      this.page.waitForSelector("#id"),
-      this.page.waitForSelector("#pw"),
-    ]);
-
-    await this.page.focus("#id");
-    await this.page.keyboard.type(id, { delay: delay || 200 });
-    await this.page.focus("#pw");
-    await this.page.keyboard.type(password, { delay: delay || 200 });
-
+  private async clickLoginButton() {
     await Promise.all([
       this.page.click("#log\\.login"),
       this.page.waitForNavigation({ waitUntil: "networkidle2" }),
     ]);
+  }
 
-    if (
-      this.page
-        .url()
-        .includes(loginURL || "https://nid.naver.com/nidlogin.login")
-    ) {
-      throw new Error("Login failed");
-    }
+  private async typeLoginInfo(id: string, password: string, delay: number) {
+    await this.page.focus("#id");
+    await this.page.keyboard.type(id, { delay: delay || 200 });
+    await this.page.focus("#pw");
+    await this.page.keyboard.type(password, { delay: delay || 200 });
+    await this.clickLoginButton();
+  }
+
+  private async waitForLoginElements() {
+    await Promise.all([
+      this.page.waitForSelector("#id"),
+      this.page.waitForSelector("#pw"),
+    ]);
+  }
+
+  async login(id: string, password: string, delay?: number, loginURL?: string) {
+    await this.waitForLoginElements();
+    await this.typeLoginInfo(id, password, delay || 200);
   }
 
   async loadMoreHistory() {
