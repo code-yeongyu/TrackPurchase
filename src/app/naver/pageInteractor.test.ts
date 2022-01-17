@@ -516,8 +516,11 @@ describe("Login", () => {
     const module = ModuleFactory.create(page);
     const pageInteractor = module.pageInteractor;
 
+    module.urlChanger.loginURL = "https://example.com";
     await module.urlChanger.moveToLoginURL();
     await page.setContent(loginHTML);
+
+    await page.waitForSelector("#log\\.login");
 
     await page.evaluate((loginURL: string) => {
       // make login button to do nothing
@@ -538,12 +541,7 @@ describe("Login", () => {
     await page.setContent(manualOTPHTML);
 
     // when
-    const loginStatus$ = interval(500).pipe(
-      mergeMap(() => pageInteractor.getLoginStatus())
-    );
-    const firstEvent = await firstValueFrom(loginStatus$);
-
-    // then
-    expect(firstEvent).toEqual("manual-otp-required");
+    const status = await pageInteractor.getLoginStatus();
+    expect(status).toBe("manual-otp-required");
   });
 });

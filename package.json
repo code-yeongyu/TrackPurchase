@@ -21,7 +21,8 @@
     "preset": "jest-puppeteer",
     "coveragePathIgnorePatterns": [
       "dist/",
-      "elementParser.ts"
+      "elementParser.ts",
+      "pageInteractor.ts"
     ],
     "testPathIgnorePatterns": [
       "dist/"
