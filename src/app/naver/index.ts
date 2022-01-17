@@ -1,7 +1,7 @@
 import Module from "./module";
 import ModuleFactory from "./moduleFactory";
 import URLChanger from "./urlChanger";
-import PageInteractor from "./pageInteractor";
+import PageInteractor, { LoginEvent } from "./pageInteractor";
 import ElementParser from "./elementParser";
 import Service from "./service";
 
@@ -12,4 +12,5 @@ export {
   PageInteractor,
   ElementParser,
   Service,
+  LoginEvent,
 };

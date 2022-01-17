@@ -1,6 +1,12 @@
 import puppeteer from "puppeteer";
 import { ElementParser } from ".";
 
+export type LoginEvent =
+  | "success"
+  | "otp-required"
+  | "manual-otp-required"
+  | "unexpected";
+
 export default class PageInteractor {
   private readonly page: puppeteer.Page;
   private readonly elementParser: ElementParser;
