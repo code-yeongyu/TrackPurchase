@@ -44,6 +44,48 @@ export default class PageInteractor {
     await this.typeLoginInfo(id, password, delay || 200);
   }
 
+  async getLoginStatus(loginURL?: string): Promise<LoginEvent> {
+    const isLoginPage = this.page
+      .url()
+      .includes(loginURL || "https://nid.naver.com/nidlogin.login");
+    if (!isLoginPage) {
+      return "success";
+    }
+
+    await this.page.waitForSelector("#direct_call");
+
+    const otpElementDisplayStyle = await this.page.$eval(
+      "#remail_btn1",
+      (button) => {
+        if (!(button instanceof HTMLElement)) {
+          return;
+        }
+        return button.style.display;
+      }
+    );
+    if (otpElementDisplayStyle !== "") {
+      return "otp-required";
+    }
+
+    const manualOTPElement =
+      await this.elementParser.parseManualOTPInputElement();
+    if (manualOTPElement) {
+      return "manual-otp-required";
+    }
+
+    return "unexpected";
+  }
+
+  async fillManualOTPInput(code: string) {
+    const manualOTPElement =
+      await this.elementParser.parseManualOTPInputElement();
+    if (!manualOTPElement) {
+      throw new Error("manual-otp-input-element not found");
+    }
+    await manualOTPElement.type(code);
+    await manualOTPElement.press("Enter");
+  }
+
   async loadMoreHistory() {
     if (this._fullyLoaded) {
       return;
