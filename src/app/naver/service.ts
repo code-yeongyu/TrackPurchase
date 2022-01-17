@@ -1,3 +1,4 @@
+import { distinctUntilChanged, interval, mergeMap, takeWhile } from "rxjs";
 import { Module } from ".";
 
 export default class Service {
@@ -9,7 +10,15 @@ export default class Service {
 
   async login(id: string, password: string) {
     await this.module.urlChanger.moveToLoginURL();
-    await this.module.pageInteractor.login(id, password);
+    this.module.pageInteractor.login(id, password);
+
+    const loginStatus$ = interval(500)
+      .pipe(mergeMap(() => this.module.pageInteractor.getLoginStatus()))
+      .pipe(
+        distinctUntilChanged(),
+        takeWhile((loginStatus) => loginStatus !== "success")
+      );
+    return loginStatus$;
   }
 
   async getHistory() {
