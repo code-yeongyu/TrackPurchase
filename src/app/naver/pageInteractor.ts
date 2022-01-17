@@ -1,11 +1,14 @@
 import puppeteer from "puppeteer";
+import { ElementParser } from ".";
 
 export default class PageInteractor {
   private readonly page: puppeteer.Page;
+  private readonly elementParser: ElementParser;
   private _fullyLoaded = false;
 
-  constructor(page: puppeteer.Page) {
+  constructor(page: puppeteer.Page, elementParser: ElementParser) {
     this.page = page;
+    this.elementParser = elementParser;
   }
 
   private async clickLoginButton() {
