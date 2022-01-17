@@ -52,17 +52,13 @@ export default class PageInteractor {
       return "success";
     }
 
-    await this.page.waitForSelector("#direct_call");
-
-    const otpElementDisplayStyle = await this.page.$eval(
-      "#remail_btn1",
-      (button) => {
-        if (!(button instanceof HTMLElement)) {
-          return;
-        }
-        return button.style.display;
+    const otpElementDisplayStyle = await this.page.evaluate(() => {
+      const button = document.querySelector("#remail_btn1");
+      if (!(button instanceof HTMLElement)) {
+        return;
       }
-    );
+      return button.style.display;
+    });
     if (otpElementDisplayStyle !== "") {
       return "otp-required";
     }
