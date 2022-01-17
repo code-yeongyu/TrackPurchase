@@ -104,7 +104,7 @@ export default class PageInteractor {
         (currentScrollHeight: number) => {
           return document.body.scrollHeight > currentScrollHeight;
         },
-        { timeout: 1000 },
+        { timeout: 2000 },
         currentScrollHeight
       );
     } catch (e) {
