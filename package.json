@@ -1,6 +1,6 @@
 {
   "name": "trackpurchase",
-  "version": "0.1.14",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
@@ -21,7 +21,11 @@
     "preset": "jest-puppeteer",
     "coveragePathIgnorePatterns": [
       "dist/",
-      "elementParser.ts"
+      "elementParser.ts",
+      "pageInteractor.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "dist/"
     ]
   },
   "scripts": {
@@ -30,7 +34,8 @@
     "build": "tsc -p ."
   },
   "dependencies": {
-    "puppeteer": "^12.0.1"
+    "puppeteer": "^12.0.1",
+    "rxjs": "^7.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",

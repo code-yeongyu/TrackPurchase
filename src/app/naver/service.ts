@@ -1,3 +1,12 @@
+import {
+  concat,
+  defer,
+  distinctUntilChanged,
+  from,
+  interval,
+  mergeMap,
+  takeWhile,
+} from "rxjs";
 import { Module } from ".";
 
 export default class Service {
@@ -7,26 +16,35 @@ export default class Service {
     this.module = module;
   }
 
-  async login(id: string, password: string) {
+  async normalLogin(id: string, password: string) {
     await this.module.urlChanger.moveToLoginURL();
     await this.module.pageInteractor.login(id, password);
   }
 
+  interactiveLogin(id: string, password: string) {
+    const login$ = defer(() => from(this.normalLogin(id, password)));
+    const loginStatus$ = interval(500)
+      .pipe(mergeMap(() => this.module.pageInteractor.getLoginStatus()))
+      .pipe(
+        distinctUntilChanged(),
+        takeWhile((loginStatus) => loginStatus !== "success")
+      );
+
+    const result$ = concat(login$, loginStatus$);
+    return result$;
+  }
+
   async getHistory() {
-    const history = [];
     await this.module.urlChanger.moveToPaymentHistoryURL();
     await this.module.pageInteractor.loadPaymentHistoryUntilPageEnds();
 
     const paymentElements =
       await this.module.elementParser.parsePaymentElements();
-    for (const element of paymentElements) {
-      const payment = await this.module.elementParser.parseElement(element);
-      if (!payment) {
-        continue;
-      }
-      history.push(payment);
-    }
 
-    return history;
+    return await Promise.all(
+      paymentElements.map((element) =>
+        this.module.elementParser.parseElement(element)
+      )
+    );
   }
 }

@@ -1,36 +1,85 @@
 import puppeteer from "puppeteer";
+import { ElementParser } from ".";
+
+export type LoginEvent =
+  | "success"
+  | "otp-required"
+  | "manual-otp-required"
+  | "unexpected";
 
 export default class PageInteractor {
   private readonly page: puppeteer.Page;
+  private readonly elementParser: ElementParser;
   private _fullyLoaded = false;
 
-  constructor(page: puppeteer.Page) {
+  constructor(page: puppeteer.Page, elementParser: ElementParser) {
     this.page = page;
+    this.elementParser = elementParser;
   }
 
-  async login(id: string, password: string, delay?: number, loginURL?: string) {
-    await Promise.all([
-      this.page.waitForSelector("#id"),
-      this.page.waitForSelector("#pw"),
-    ]);
-
-    await this.page.focus("#id");
-    await this.page.keyboard.type(id, { delay: delay || 200 });
-    await this.page.focus("#pw");
-    await this.page.keyboard.type(password, { delay: delay || 200 });
-
+  private async clickLoginButton() {
     await Promise.all([
       this.page.click("#log\\.login"),
       this.page.waitForNavigation({ waitUntil: "networkidle2" }),
     ]);
+  }
 
-    if (
-      this.page
-        .url()
-        .includes(loginURL || "https://nid.naver.com/nidlogin.login")
-    ) {
-      throw new Error("Login failed");
+  private async typeLoginInfo(id: string, password: string, delay: number) {
+    await this.page.focus("#id");
+    await this.page.keyboard.type(id, { delay: delay || 200 });
+    await this.page.focus("#pw");
+    await this.page.keyboard.type(password, { delay: delay || 200 });
+    await this.clickLoginButton();
+  }
+
+  private async waitForLoginElements() {
+    await Promise.all([
+      this.page.waitForSelector("#id"),
+      this.page.waitForSelector("#pw"),
+    ]);
+  }
+
+  async login(id: string, password: string, delay?: number, loginURL?: string) {
+    await this.waitForLoginElements();
+    await this.typeLoginInfo(id, password, delay || 200);
+  }
+
+  async getLoginStatus(loginURL?: string): Promise<LoginEvent> {
+    const isLoginPage = this.page
+      .url()
+      .includes(loginURL || "https://nid.naver.com/nidlogin.login");
+    if (!isLoginPage) {
+      return "success";
     }
+
+    const otpElementDisplayStyle = await this.page.evaluate(() => {
+      const button = document.querySelector("#remail_btn1");
+      if (!(button instanceof HTMLElement)) {
+        return;
+      }
+      return button.style.display;
+    });
+    if (otpElementDisplayStyle !== "") {
+      return "otp-required";
+    }
+
+    const manualOTPElement =
+      await this.elementParser.parseManualOTPInputElement();
+    if (manualOTPElement) {
+      return "manual-otp-required";
+    }
+
+    return "unexpected";
+  }
+
+  async fillManualOTPInput(code: string) {
+    const manualOTPElement =
+      await this.elementParser.parseManualOTPInputElement();
+    if (!manualOTPElement) {
+      throw new Error("manual-otp-input-element not found");
+    }
+    await manualOTPElement.type(code);
+    await manualOTPElement.press("Enter");
   }
 
   async loadMoreHistory() {
@@ -51,7 +100,7 @@ export default class PageInteractor {
         (currentScrollHeight: number) => {
           return document.body.scrollHeight > currentScrollHeight;
         },
-        { timeout: 1000 },
+        { timeout: 2000 },
         currentScrollHeight
       );
     } catch (e) {
