@@ -2,7 +2,6 @@ import puppeteer from "puppeteer";
 import { PaymentHistory } from "../common";
 
 export default class ElementParser {
-  private readonly page: puppeteer.Page;
   private static async parseName(element: puppeteer.ElementHandle) {
     const name =
       (await element.$eval(
@@ -12,7 +11,7 @@ export default class ElementParser {
     return name;
   }
 
-  constructor(page: puppeteer.Page) {
+  constructor(private readonly page: puppeteer.Page) {
     this.page = page;
   }
 
