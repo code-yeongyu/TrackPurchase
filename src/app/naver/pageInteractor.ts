@@ -8,11 +8,12 @@ export type LoginEvent =
   | "unexpected";
 
 export default class PageInteractor {
-  private readonly page: puppeteer.Page;
-  private readonly elementParser: ElementParser;
   private _fullyLoaded = false;
 
-  constructor(page: puppeteer.Page, elementParser: ElementParser) {
+  constructor(
+    private readonly page: puppeteer.Page,
+    private readonly elementParser: ElementParser
+  ) {
     this.page = page;
     this.elementParser = elementParser;
   }
