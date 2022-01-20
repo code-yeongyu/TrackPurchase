@@ -1,12 +1,11 @@
 import puppeteer from "puppeteer";
 
 export default class URLChanger {
-  private readonly page: puppeteer.Page;
   loginURL = "https://nid.naver.com/nidlogin.login";
   paymentHistoryURL =
     "https://new-m.pay.naver.com/historybenefit/paymenthistory";
 
-  constructor(page: puppeteer.Page) {
+  constructor(private readonly page: puppeteer.Page) {
     this.page = page;
   }
 

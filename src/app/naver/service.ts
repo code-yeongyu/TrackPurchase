@@ -10,9 +10,7 @@ import {
 import { Module } from ".";
 
 export default class Service {
-  private readonly module: Module;
-
-  constructor(module: Module) {
+  constructor(private readonly module: Module) {
     this.module = module;
   }
 
