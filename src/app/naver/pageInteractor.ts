@@ -83,6 +83,27 @@ export default class PageInteractor {
     await manualOTPElement.press("Enter");
   }
 
+  async getCaptchaStatus(): Promise<CaptchaStatus | null> {
+    const data = await this.page.evaluate(() => {
+      const captchaImage = document.querySelector(
+        "#captchaimg"
+      ) as HTMLElement | null;
+      const captchaText = document.querySelector(
+        "#captcha_info"
+      ) as HTMLElement | null;
+
+      if (!captchaImage || !captchaText) {
+        return;
+      }
+
+      const imageData = captchaImage.getAttribute("src") as string;
+      const question = captchaText.innerText;
+
+      return { imageData, question };
+    });
+
+    return data || null;
+  }
   async loadMoreHistory() {
     if (this._fullyLoaded) {
       return;
