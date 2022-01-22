@@ -1,8 +1,9 @@
 import puppeteer from "puppeteer";
-import { NaverApp } from "trackpurchase";
+import { NaverApp } from ".";
 
 import readline from "readline";
 import { concat, defer, filter, from, tap } from "rxjs";
+import { CaptchaStatus } from "app/naver";
 
 const printNaverPayHistory = async (id: string, password: string) => {
   const MOBILE_UA =
@@ -35,6 +36,22 @@ const printNaverPayHistory = async (id: string, password: string) => {
       if (event === "manual-otp-required") {
         rl.question("otp code: ", async (code) => {
           module.pageInteractor.fillManualOTPInput(code);
+        });
+      }
+    }),
+    tap((event) => {
+      function instanceOfCaptchaStatus(object: any): object is CaptchaStatus {
+        if (object) {
+          return "imageData" in object && "question" in object;
+        }
+        return false;
+      }
+
+      if (instanceOfCaptchaStatus(event)) {
+        console.log(`encodedImage: ${event.imageData}`);
+        console.log(`question: ${event.question}`);
+        rl.question("captcha code: ", (code) => {
+          module.pageInteractor.fillCaptchaInput(code, password);
         });
       }
     }),
