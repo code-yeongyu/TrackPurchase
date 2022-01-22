@@ -7,6 +7,11 @@ export type LoginEvent =
   | "manual-otp-required"
   | "unexpected";
 
+export interface CaptchaStatus {
+  readonly imageData: string;
+  readonly question: string;
+}
+
 export default class PageInteractor {
   private _fullyLoaded = false;
 
@@ -104,6 +109,17 @@ export default class PageInteractor {
 
     return data || null;
   }
+
+  async fillCaptchaInput(answer: string, password: string) {
+    const captchaElement = await this.elementParser.parseCaptchaInputElement();
+    if (!captchaElement) {
+      throw new Error("captcha input element not found");
+    }
+    await captchaElement.type(answer);
+
+    await this.typeLoginInfo("", password, 200);
+  }
+
   async loadMoreHistory() {
     if (this._fullyLoaded) {
       return;
