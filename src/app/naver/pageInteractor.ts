@@ -27,9 +27,9 @@ export default class PageInteractor {
 
   private async typeLoginInfo(id: string, password: string, delay: number) {
     await this.page.focus("#id");
-    await this.page.keyboard.type(id, { delay: delay || 200 });
+    await this.page.keyboard.type(id, { delay: delay });
     await this.page.focus("#pw");
-    await this.page.keyboard.type(password, { delay: delay || 200 });
+    await this.page.keyboard.type(password, { delay: delay });
     await this.clickLoginButton();
   }
 
