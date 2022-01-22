@@ -117,4 +117,8 @@ export default class ElementParser {
   async parseManualOTPInputElement() {
     return await this.page.$("#otp");
   }
+
+  async parseCaptchaInputElement() {
+    return await this.page.$("#captcha");
+  }
 }

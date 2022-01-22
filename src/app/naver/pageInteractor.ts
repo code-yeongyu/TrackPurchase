@@ -7,6 +7,11 @@ export type LoginEvent =
   | "manual-otp-required"
   | "unexpected";
 
+export interface CaptchaStatus {
+  readonly imageData: string;
+  readonly question: string;
+}
+
 export default class PageInteractor {
   private _fullyLoaded = false;
 
@@ -27,9 +32,9 @@ export default class PageInteractor {
 
   private async typeLoginInfo(id: string, password: string, delay: number) {
     await this.page.focus("#id");
-    await this.page.keyboard.type(id, { delay: delay || 200 });
+    await this.page.keyboard.type(id, { delay: delay });
     await this.page.focus("#pw");
-    await this.page.keyboard.type(password, { delay: delay || 200 });
+    await this.page.keyboard.type(password, { delay: delay });
     await this.clickLoginButton();
   }
 
@@ -81,6 +86,38 @@ export default class PageInteractor {
     }
     await manualOTPElement.type(code);
     await manualOTPElement.press("Enter");
+  }
+
+  async getCaptchaStatus(): Promise<CaptchaStatus | null> {
+    const data = await this.page.evaluate(() => {
+      const captchaImage = document.querySelector(
+        "#captchaimg"
+      ) as HTMLElement | null;
+      const captchaText = document.querySelector(
+        "#captcha_info"
+      ) as HTMLElement | null;
+
+      if (!captchaImage || !captchaText) {
+        return;
+      }
+
+      const imageData = captchaImage.getAttribute("src") as string;
+      const question = captchaText.innerText;
+
+      return { imageData, question };
+    });
+
+    return data || null;
+  }
+
+  async fillCaptchaInput(answer: string, password: string) {
+    const captchaElement = await this.elementParser.parseCaptchaInputElement();
+    if (!captchaElement) {
+      throw new Error("captcha input element not found");
+    }
+    await captchaElement.type(answer);
+
+    await this.typeLoginInfo("", password, 200);
   }
 
   async loadMoreHistory() {
