@@ -27,8 +27,14 @@ export default class Service {
         distinctUntilChanged(),
         takeWhile((loginStatus) => loginStatus !== "success")
       );
+    const captchaStatus$ = interval(500)
+      .pipe(mergeMap(() => this.module.pageInteractor.getCaptchaStatus()))
+      .pipe(
+        distinctUntilChanged((a, b) => a?.question === b?.question),
+        takeWhile((captchaStatus) => captchaStatus !== null)
+      );
 
-    const result$ = concat(login$, loginStatus$);
+    const result$ = concat(login$, captchaStatus$, loginStatus$);
     return result$;
   }
 
