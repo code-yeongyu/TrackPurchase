@@ -50,6 +50,10 @@ export default class PageInteractor {
     await this.typeLoginInfo(id, password, delay || 200);
   }
 
+  async getCookies() {
+    return await this.page.evaluate(() => document.cookie);
+  }
+
   async getLoginStatus(loginURL?: string): Promise<LoginEvent> {
     const isLoginPage = this.page
       .url()
