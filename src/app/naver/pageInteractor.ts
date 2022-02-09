@@ -51,7 +51,12 @@ export default class PageInteractor {
   }
 
   async getCookies() {
-    return await this.page.evaluate(() => document.cookie);
+    const cookies = await this.page.cookies();
+    let cookieString = "";
+    for (const cookie of cookies) {
+      cookieString += `${cookie.name}=${cookie.value}; `;
+    }
+    return cookieString;
   }
 
   async getLoginStatus(loginURL?: string): Promise<LoginEvent> {
