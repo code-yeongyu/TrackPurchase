@@ -4,6 +4,8 @@ import URLChanger from "./urlChanger";
 import PageInteractor, { LoginEvent, CaptchaStatus } from "./pageInteractor";
 import ElementParser from "./elementParser";
 import Service from "./service";
+import { NaverScraper } from "./scraper";
+import { NaverParser } from "./parser";
 
 export {
   Module,
@@ -14,4 +16,6 @@ export {
   Service,
   LoginEvent,
   CaptchaStatus,
+  NaverScraper,
+  NaverParser,
 };
