@@ -41,7 +41,9 @@ const page = await browser.newPage();
 const module = NaverApp.ModuleFactory.create(page);
 const crawlService = new NaverApp.Service(module);
 
-await crawlService.login(id, password);
+await crawlService.normalLogin(id, password, 100);
 const history = await crawlService.getHistory();
+browser.close();
+
 console.log(history);
 ```
