@@ -1,9 +1,9 @@
 import puppeteer from "puppeteer";
-import { NaverApp } from ".";
+import { NaverApp } from "trackpurchase";
 
 import readline from "readline";
 import { concat, defer, filter, from, tap } from "rxjs";
-import { CaptchaStatus } from "app/naver";
+import { CaptchaStatus } from "trackpurchase/app/naver";
 
 const printNaverPayHistory = async (id: string, password: string) => {
   const MOBILE_UA =
@@ -21,7 +21,7 @@ const printNaverPayHistory = async (id: string, password: string) => {
   const module = NaverApp.ModuleFactory.create(page);
   const crawlService = new NaverApp.Service(module);
 
-  const loginEvent$ = crawlService.interactiveLogin(id, password);
+  const loginEvent$ = crawlService.interactiveLogin(id, password, 100);
   const history$ = defer(() => from(crawlService.getHistory()));
   const closePage$ = defer(() => from(page.close()));
   const closeBrowser$ = defer(() => from(browser.close()));

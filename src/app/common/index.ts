@@ -1,4 +1,4 @@
 import Module from "./module";
-import PaymentHistory from "./paymentHistory";
+import PaymentHistory from "./types/paymentHistory";
 
 export { Module, PaymentHistory };

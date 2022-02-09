@@ -1,0 +1,8 @@
+export enum ServiceGroup {
+  SHOPPING = "SHOPPING",
+  BOOKING = "BOOKING",
+  QR_PAYMENT = "QR_PAYMENT",
+  CONTENTS = "CONTENTS",
+  SUBSCRIPTION = "SUBSCRIPTION",
+  TAX = "TAX",
+}
