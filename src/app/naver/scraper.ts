@@ -9,13 +9,15 @@ export class NaverScraper {
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
     const date = today.getDate();
-    return `${year}-${month}-${date}`;
+    const monthString = month >= 10 ? month : "0" + month;
+    const dateString = date >= 10 ? date : "0" + date;
+    return `${year}-${monthString}-${dateString}`;
   }
 
   searchPaymentHistoryURL =
     "https://new-m.pay.naver.com/api/timeline/searchPaymentHistory";
   async searchPaymentHistory(
-    cookie: string,
+    cookies: string,
     searchOptions?: {
       keyword: string;
       serviceGroup: ServiceGroup;
@@ -31,24 +33,23 @@ export class NaverScraper {
     };
     const options = {
       headers: {
-        Cookie: cookie,
+        Cookie: cookies,
         "content-type": "application/json;charset=UTF-8",
       },
     };
-
     const response = await axios.post(
       this.searchPaymentHistoryURL,
       data,
       options
     );
 
-    return { status: response.status, data: response.data as string };
+    return { status: response.status, data: JSON.stringify(response.data) };
   }
 
   nextPaymentHistoryURL =
     "https://new-m.pay.naver.com/api/timeline/nextPaymentHistory";
   async nextPaymentHistory(
-    cookie: string,
+    cookies: string,
     lastHistoryId: string,
     lastHistoryDateTimestamp: number,
     searchOptions?: {
@@ -68,17 +69,15 @@ export class NaverScraper {
     };
     const options = {
       headers: {
-        Cookie: cookie,
+        Cookie: cookies,
         "content-type": "application/json;charset=UTF-8",
       },
     };
-
     const response = await axios.post(
       this.nextPaymentHistoryURL,
       data,
       options
     );
-
-    return { status: response.status, data: response.data as string };
+    return { status: response.status, data: JSON.stringify(response.data) };
   }
 }

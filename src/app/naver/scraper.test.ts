@@ -4,13 +4,13 @@ describe("Scraper", () => {
   describe("searchPaymentHistory", () => {
     it("should create an post request", async () => {
       // given
-      const cookie = "";
+      const cookies = "";
       const scraper = new NaverScraper();
       const postSpy = jest.spyOn(axios, "post");
       postSpy.mockImplementation(() => Promise.resolve({ data: {} }));
 
       // when
-      await scraper.searchPaymentHistory(cookie);
+      await scraper.searchPaymentHistory(cookies);
 
       // then
       expect(postSpy).toBeCalledWith(
@@ -18,7 +18,7 @@ describe("Scraper", () => {
         expect.any(Object),
         expect.objectContaining({
           headers: expect.objectContaining({
-            Cookie: cookie,
+            Cookie: cookies,
           }),
         })
       );
@@ -33,14 +33,14 @@ describe("Scraper", () => {
       const hour = minute * 60;
       const day = hour * 24;
 
-      const cookie = "";
+      const cookies = "";
       const scraper = new NaverScraper();
       const postSpy = jest.spyOn(axios, "post");
       postSpy.mockImplementation(() => Promise.resolve({ data: {} }));
 
       // when
       await scraper.nextPaymentHistory(
-        cookie,
+        cookies,
         "order-1234",
         new Date().getTime() - day * 30
       );
@@ -51,7 +51,7 @@ describe("Scraper", () => {
         expect.any(Object),
         expect.objectContaining({
           headers: expect.objectContaining({
-            Cookie: cookie,
+            Cookie: cookies,
           }),
         })
       );
