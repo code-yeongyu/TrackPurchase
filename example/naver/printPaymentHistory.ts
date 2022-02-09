@@ -18,8 +18,9 @@ const printNaverPayHistory = async (id: string, password: string) => {
   const module = NaverApp.ModuleFactory.create(page);
   const crawlService = new NaverApp.Service(module);
 
-  await crawlService.normalLogin(id, password);
+  await crawlService.normalLogin(id, password, 100);
 
+  browser.close();
   const history = await crawlService.getHistory();
   console.log(history);
 };
