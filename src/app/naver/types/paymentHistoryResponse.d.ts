@@ -80,8 +80,8 @@ export interface AdditionalData {
 }
 
 export interface Status {
-  name: string;
-  text: string;
+  name: StatusGroup;
+  text: StatusGroupText;
   color: string;
 }
 

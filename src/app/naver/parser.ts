@@ -1,5 +1,5 @@
 import { PaymentHistory } from "app/common";
-import { PaymentHistoryResponse } from "./paymentHistoryResponse";
+import { PaymentHistoryResponse } from "./types/paymentHistoryResponse";
 
 export class NaverParser {
   parsePaymentHistory(jsonString: string): PaymentHistory[] {

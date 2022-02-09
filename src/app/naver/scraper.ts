@@ -1,4 +1,4 @@
-import { CommonResponse } from "app/common/response";
+import { CommonResponse } from "app/common/types/response";
 import axios from "axios";
 
 export class NaverScraper {
