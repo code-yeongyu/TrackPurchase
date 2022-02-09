@@ -29,7 +29,6 @@ export default class PageInteractor {
       this.page.waitForNavigation({ waitUntil: "networkidle2" }),
     ]);
   }
-
   private async typeLoginInfo(id: string, password: string, delay: number) {
     await this.page.focus("#id");
     await this.page.keyboard.type(id, { delay: delay });
@@ -37,28 +36,18 @@ export default class PageInteractor {
     await this.page.keyboard.type(password, { delay: delay });
     await this.clickLoginButton();
   }
-
   private async waitForLoginElements() {
     await Promise.all([
       this.page.waitForSelector("#id"),
       this.page.waitForSelector("#pw"),
     ]);
   }
-
   async login(id: string, password: string, delay?: number, loginURL?: string) {
     await this.waitForLoginElements();
     await this.typeLoginInfo(id, password, delay || 200);
   }
 
-  async getCookies() {
-    const cookies = await this.page.cookies();
-    let cookieString = "";
-    for (const cookie of cookies) {
-      cookieString += `${cookie.name}=${cookie.value}; `;
-    }
-    return cookieString;
-  }
-
+  otpInputSelector = "#otp";
   async getLoginStatus(loginURL?: string): Promise<LoginEvent> {
     const isLoginPage = this.page
       .url()
@@ -78,8 +67,7 @@ export default class PageInteractor {
       return "otp-required";
     }
 
-    const manualOTPElement =
-      await this.elementParser.parseManualOTPInputElement();
+    const manualOTPElement = await this.page.$(this.otpInputSelector);
     if (manualOTPElement) {
       return "manual-otp-required";
     }
@@ -87,9 +75,36 @@ export default class PageInteractor {
     return "unexpected";
   }
 
+  captchaImageSelector = "#captchaimg";
+  captchaTextSelector = "#captcha_info";
+  async getCaptchaStatus(): Promise<CaptchaStatus | null> {
+    const data = await this.page.evaluate(
+      (captchaImageSelector: string, captchaTextSelector: string) => {
+        const captchaImage = document.querySelector(
+          captchaImageSelector
+        ) as HTMLElement | null;
+        const captchaText = document.querySelector(
+          captchaTextSelector
+        ) as HTMLElement | null;
+
+        if (!captchaImage || !captchaText) {
+          return;
+        }
+
+        const imageData = captchaImage.getAttribute("src") as string;
+        const question = captchaText.innerText;
+
+        return { imageData, question };
+      },
+      this.captchaImageSelector,
+      this.captchaTextSelector
+    );
+
+    return data || null;
+  }
+
   async fillManualOTPInput(code: string) {
-    const manualOTPElement =
-      await this.elementParser.parseManualOTPInputElement();
+    const manualOTPElement = await this.page.$(this.otpInputSelector);
     if (!manualOTPElement) {
       throw new Error("manual-otp-input-element not found");
     }
@@ -97,30 +112,9 @@ export default class PageInteractor {
     await manualOTPElement.press("Enter");
   }
 
-  async getCaptchaStatus(): Promise<CaptchaStatus | null> {
-    const data = await this.page.evaluate(() => {
-      const captchaImage = document.querySelector(
-        "#captchaimg"
-      ) as HTMLElement | null;
-      const captchaText = document.querySelector(
-        "#captcha_info"
-      ) as HTMLElement | null;
-
-      if (!captchaImage || !captchaText) {
-        return;
-      }
-
-      const imageData = captchaImage.getAttribute("src") as string;
-      const question = captchaText.innerText;
-
-      return { imageData, question };
-    });
-
-    return data || null;
-  }
-
+  catchaInputSelector = "#captcha";
   async fillCaptchaInput(answer: string, password: string) {
-    const captchaElement = await this.elementParser.parseCaptchaInputElement();
+    const captchaElement = await this.page.$(this.catchaInputSelector);
     if (!captchaElement) {
       throw new Error("captcha input element not found");
     }
@@ -129,42 +123,12 @@ export default class PageInteractor {
     await this.typeLoginInfo("", password, 200);
   }
 
-  async loadMoreHistory() {
-    if (this._fullyLoaded) {
-      return;
+  async getCookies() {
+    const cookies = await this.page.cookies();
+    let cookieString = "";
+    for (const cookie of cookies) {
+      cookieString += `${cookie.name}=${cookie.value}; `;
     }
-
-    const buttonSelector = "div[class^='ButtonPrevList_article__'] > button";
-    const currentScrollHeight: number = await this.page.evaluate(() => {
-      return document.body.scrollHeight;
-    });
-    const loadMoreButton = await this.page.$(buttonSelector);
-
-    await loadMoreButton?.click();
-    try {
-      await this.page.waitForFunction(
-        // wait 1000ms to scroll height increases
-        (currentScrollHeight: number) => {
-          return document.body.scrollHeight > currentScrollHeight;
-        },
-        { timeout: 2000 },
-        currentScrollHeight
-      );
-    } catch (e) {
-      if (e instanceof puppeteer.errors.TimeoutError) {
-        const newLoadMoreButton = await this.page.$(buttonSelector);
-        if (newLoadMoreButton === null) {
-          this._fullyLoaded = true;
-        }
-        return;
-      }
-      console.error(e);
-    }
-  }
-
-  async loadPaymentHistoryUntilPageEnds() {
-    while (!this._fullyLoaded) {
-      await this.loadMoreHistory();
-    }
+    return cookieString;
   }
 }
