@@ -10,6 +10,7 @@ import {
 import { Module } from ".";
 
 export default class Service {
+  cookies: string;
   constructor(private readonly module: Module) {
     this.module = module;
   }
@@ -17,6 +18,7 @@ export default class Service {
   async normalLogin(id: string, password: string, delay?: number) {
     await this.module.urlChanger.moveToLoginURL();
     await this.module.pageInteractor.login(id, password, delay);
+    this.cookies = await this.module.pageInteractor.getCookies();
   }
 
   interactiveLogin(id: string, password: string, delay?: number) {
