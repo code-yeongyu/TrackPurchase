@@ -14,13 +14,20 @@ export class NaverScraper {
 
   searchPaymentHistoryURL =
     "https://new-m.pay.naver.com/api/timeline/searchPaymentHistory";
-  async searchPaymentHistory(cookie: string): Promise<CommonResponse> {
+  async searchPaymentHistory(
+    cookie: string,
+    searchOptions?: {
+      keyword: string;
+      serviceGroup: ServiceGroup;
+      statusGroup: StatusGroup;
+    }
+  ): Promise<CommonResponse> {
     const data = {
-      keyword: null,
+      keyword: searchOptions?.keyword || null,
       startDate: "2000-01-01",
       endDate: await this.getTodayString(),
-      serviceGroup: null,
-      statusGroup: null,
+      serviceGroup: searchOptions?.serviceGroup || null,
+      statusGroup: searchOptions?.statusGroup || null,
     };
     const options = {
       headers: {
