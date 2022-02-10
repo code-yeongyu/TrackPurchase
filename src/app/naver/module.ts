@@ -1,16 +1,8 @@
-import {
-  URLChanger,
-  PageInteractor,
-  ElementParser,
-  NaverScraper,
-  NaverParser,
-} from ".";
-import { Module as BaseModule } from "../common";
+import { URLChanger, PageInteractor, NaverScraper, NaverParser } from ".";
 
-export default interface Module extends BaseModule {
+export default interface Module {
   readonly urlChanger: URLChanger;
   readonly pageInteractor: PageInteractor;
-  readonly elementParser: ElementParser;
   readonly scraper: NaverScraper;
   readonly parser: NaverParser;
 }

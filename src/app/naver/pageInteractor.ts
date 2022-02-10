@@ -13,14 +13,8 @@ export interface CaptchaStatus {
 }
 
 export default class PageInteractor {
-  private _fullyLoaded = false;
-
-  constructor(
-    private readonly page: puppeteer.Page,
-    private readonly elementParser: ElementParser
-  ) {
+  constructor(private readonly page: puppeteer.Page) {
     this.page = page;
-    this.elementParser = elementParser;
   }
 
   private async clickLoginButton() {
