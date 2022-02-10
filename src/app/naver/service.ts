@@ -1,14 +1,5 @@
 import { PaymentHistory } from "app/common";
 import { CommonResponse } from "app/common/types/response";
-import {
-  concat,
-  defer,
-  distinctUntilChanged,
-  from,
-  interval,
-  mergeMap,
-  takeWhile,
-} from "rxjs";
 import { NaverModule } from ".";
 
 export class NaverService {
@@ -23,28 +14,10 @@ export class NaverService {
     this.cookies = await this.module.pageInteractor.getCookies();
   }
 
-  interactiveLogin(id: string, password: string, delay?: number) {
-    const login$ = defer(() => from(this.normalLogin(id, password, delay)));
-    const loginStatus$ = interval(500)
-      .pipe(mergeMap(() => this.module.pageInteractor.getLoginStatus()))
-      .pipe(
-        distinctUntilChanged(),
-        takeWhile((loginStatus) => loginStatus !== "success")
-      );
-    const captchaStatus$ = interval(500)
-      .pipe(mergeMap(() => this.module.pageInteractor.getCaptchaStatus()))
-      .pipe(
-        distinctUntilChanged((a, b) => a?.question === b?.question),
-        takeWhile((captchaStatus) => captchaStatus !== null)
-      );
-
-    const result$ = concat(login$, captchaStatus$, loginStatus$);
-    return result$;
-  }
-
   private async isResponseValid(response: CommonResponse) {
     return response.status === 200;
   }
+
   private async getHistoryResult(response: CommonResponse) {
     if (!this.isResponseValid(response)) {
       throw new Error(`Invalid response: ${response.status} ${response.data}`);
