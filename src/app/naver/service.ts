@@ -9,11 +9,11 @@ import {
   mergeMap,
   takeWhile,
 } from "rxjs";
-import { Module } from ".";
+import { NaverModule } from ".";
 
-export default class Service {
+export class Service {
   cookies?: string;
-  constructor(private readonly module: Module) {
+  constructor(private readonly module: NaverModule) {
     this.module = module;
   }
 

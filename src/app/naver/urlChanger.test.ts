@@ -1,4 +1,4 @@
-import URLChanger from "./urlChanger";
+import { URLChanger } from "./urlChanger";
 
 describe("URLChanger", () => {
   describe("moveToLoginURL", () => {

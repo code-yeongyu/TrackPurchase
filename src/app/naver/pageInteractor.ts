@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import { ElementParser } from ".";
 
 export type LoginEvent =
   | "success"
@@ -12,7 +11,7 @@ export interface CaptchaStatus {
   readonly question: string;
 }
 
-export default class PageInteractor {
+export class PageInteractor {
   constructor(private readonly page: puppeteer.Page) {
     this.page = page;
   }
