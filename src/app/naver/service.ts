@@ -11,7 +11,7 @@ import {
 } from "rxjs";
 import { NaverModule } from ".";
 
-export class Service {
+export class NaverService {
   cookies?: string;
   constructor(private readonly module: NaverModule) {
     this.module = module;

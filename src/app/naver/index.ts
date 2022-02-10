@@ -1,17 +1,21 @@
 import { NaverModule } from "./module";
-import { ModuleFactory } from "./moduleFactory";
-import { URLChanger } from "./urlChanger";
-import { LoginEvent, CaptchaStatus, PageInteractor } from "./pageInteractor";
-import { Service } from "./service";
+import { NaverModuleFactory } from "./moduleFactory";
+import { NaverURLChanger } from "./urlChanger";
+import {
+  LoginEvent,
+  CaptchaStatus,
+  NaverPageInteractor,
+} from "./pageInteractor";
+import { NaverService } from "./service";
 import { NaverScraper } from "./scraper";
 import { NaverParser } from "./parser";
 
 export {
   NaverModule,
-  ModuleFactory,
-  URLChanger,
-  PageInteractor,
-  Service,
+  NaverModuleFactory,
+  NaverURLChanger,
+  NaverPageInteractor,
+  NaverService,
   LoginEvent,
   CaptchaStatus,
   NaverScraper,

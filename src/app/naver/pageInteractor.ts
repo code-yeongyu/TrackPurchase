@@ -11,7 +11,7 @@ export interface CaptchaStatus {
   readonly question: string;
 }
 
-export class PageInteractor {
+export class NaverPageInteractor {
   constructor(private readonly page: puppeteer.Page) {
     this.page = page;
   }
