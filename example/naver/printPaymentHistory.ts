@@ -15,8 +15,8 @@ const printNaverPayHistory = async (id: string, password: string) => {
   await page.setViewport({ height: 800, width: 1200 });
   await page.setUserAgent(MOBILE_UA);
 
-  const module = NaverApp.ModuleFactory.create(page);
-  const crawlService = new NaverApp.Service(module);
+  const module = NaverApp.NaverModuleFactory.create(page);
+  const crawlService = new NaverApp.NaverService(module);
 
   await crawlService.normalLogin(id, password, 100);
 

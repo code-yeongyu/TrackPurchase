@@ -1,10 +1,10 @@
-import URLChanger from "./urlChanger";
+import { NaverURLChanger } from "./urlChanger";
 
 describe("URLChanger", () => {
   describe("moveToLoginURL", () => {
     it("Should move page to login", async () => {
       // given
-      const urlChanger = new URLChanger(page);
+      const urlChanger = new NaverURLChanger(page);
       const pageSpy = jest.spyOn(page, "goto");
 
       // when

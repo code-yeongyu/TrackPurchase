@@ -1,8 +1,13 @@
-import { URLChanger, PageInteractor, NaverScraper, NaverParser } from ".";
+import {
+  NaverURLChanger,
+  NaverPageInteractor,
+  NaverScraper,
+  NaverParser,
+} from ".";
 
-export default interface Module {
-  readonly urlChanger: URLChanger;
-  readonly pageInteractor: PageInteractor;
+export interface NaverModule {
+  readonly urlChanger: NaverURLChanger;
+  readonly pageInteractor: NaverPageInteractor;
   readonly scraper: NaverScraper;
   readonly parser: NaverParser;
 }

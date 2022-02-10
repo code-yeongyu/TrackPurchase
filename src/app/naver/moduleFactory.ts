@@ -1,16 +1,16 @@
 import puppeteer from "puppeteer";
 import {
-  Module,
-  URLChanger,
-  PageInteractor,
+  NaverModule,
+  NaverURLChanger,
+  NaverPageInteractor,
   NaverScraper,
   NaverParser,
 } from ".";
 
-export default class ModuleFactory {
-  static create(page: puppeteer.Page): Module {
-    const urlChanger = new URLChanger(page);
-    const pageInteractor = new PageInteractor(page);
+export class NaverModuleFactory {
+  static create(page: puppeteer.Page): NaverModule {
+    const urlChanger = new NaverURLChanger(page);
+    const pageInteractor = new NaverPageInteractor(page);
     const scraper = new NaverScraper();
     const parser = new NaverParser();
 

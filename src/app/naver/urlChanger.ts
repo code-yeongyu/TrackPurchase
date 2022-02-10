@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 
-export default class URLChanger {
+export class NaverURLChanger {
   constructor(private readonly page: puppeteer.Page) {
     this.page = page;
   }

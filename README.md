@@ -38,8 +38,8 @@ import { NaverApp } from "trackpurchase";
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 
-const module = NaverApp.ModuleFactory.create(page);
-const crawlService = new NaverApp.Service(module);
+const module = NaverApp.NaverModuleFactory.create(page);
+const crawlService = new NaverApp.NaverService(module);
 
 await crawlService.normalLogin(id, password, 100);
 const history = await crawlService.getHistory();
